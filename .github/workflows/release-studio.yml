@@ -263,7 +263,12 @@ jobs:
           SHA: ${{ needs.resolve.outputs.sha }}
         run: |
           set -euo pipefail
-          notes="$RUNNER_TEMP/release-notes.md"
+          # Written straight into dist/ so it is uploaded with everything else:
+          # a release's notes are addressed as
+          # releases/download/<tag>/notes.md by the version panel, and an
+          # artifact this workflow keeps in $RUNNER_TEMP is one that address
+          # cannot reach.
+          notes="dist/notes.md"
           version_notes="release-notes/studio/${VERSION#v}.md"
           : > "$notes"
           if [ -f "$version_notes" ]; then
@@ -281,8 +286,94 @@ jobs:
           {
             printf '%s\n\n' '---'
             printf '**Windows** 包未签名，SmartScreen 会告警：选「更多信息」，再选「仍要运行」。\n\n'
-            printf '这是个人 fork 的构建，与上游发布渠道无关：**不要在应用内检查更新**，那会读到上游的版本目录并可能把你带回官方版本。升级请回到本仓库下载新包。\n'
+            printf '这是个人 fork 的构建，与上游发布渠道无关：应用内检查更新只读本仓库的发布目录，不会把你带回官方版本。\n'
           } >> "$notes"
+
+      # The updater resolves a release through two files this fork publishes
+      # itself: latest.json (this version's platform -> installer mapping) and
+      # versions.json (the catalog every check reads). Both are built here, from
+      # the artifacts as they will be uploaded, so the digests in them are the
+      # bytes a client actually receives.
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: desktop/go.mod
+          cache: true
+          cache-dependency-path: desktop/go.sum
+
+      # An artifact without a valid .minisig is one no client will install:
+      # verify.go holds this fork's public key and refuse
+      # anything else. Failing here rather than publishing unsigned packages
+      # keeps "check for updates" from offering something that cannot apply.
+      - name: Sign the artifacts
+        working-directory: desktop
+        env:
+          MINISIGN_PRIVATE_KEY: ${{ secrets.MINISIGN_PRIVATE_KEY }}
+          MINISIGN_PASSWORD: ${{ secrets.MINISIGN_PASSWORD }}
+        run: |
+          set -euo pipefail
+          if [ -z "${MINISIGN_PRIVATE_KEY:-}" ]; then
+            echo "::error::MINISIGN_PRIVATE_KEY is not configured, so no artifact could be signed"
+            exit 1
+          fi
+          go run ./cmd/sign ../dist/ReasonixStudio-*
+
+      - name: Write latest.json
+        working-directory: desktop
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          go run ./cmd/studio-manifest ../dist             "${{ needs.resolve.outputs.version }}" "${{ needs.resolve.outputs.tag }}"
+          test -s ../dist/latest.json
+          python3 -m json.tool ../dist/latest.json > /dev/null
+
+      # The catalog carries every version this fork has published, newest
+      # first, so a rollback can reach one. It is rebuilt from the previous
+      # release's own copy plus this version, which is why a release must never
+      # be deleted outright: doing so drops its entry from every later catalog.
+      - name: Update versions.json
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.resolve.outputs.tag }}
+          VERSION: ${{ needs.resolve.outputs.version }}
+          SHA: ${{ needs.resolve.outputs.sha }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          mkdir -p prev-catalog
+          previous="$(git tag --merged "$SHA" --sort=-version:refname 'studio-v*' | grep -Fxv "$TAG" | head -n 1 || true)"
+          if [ -n "$previous" ]; then
+            gh release download "$previous" --pattern versions.json --dir prev-catalog --clobber || true
+          fi
+          python3 - "$TAG" "$VERSION" "$REPO" prev-catalog/versions.json dist/versions.json <<'PY'
+          import datetime, json, os, sys
+          tag, version, repo, previous, out = sys.argv[1:6]
+          entries = []
+          if os.path.exists(previous):
+              with open(previous, encoding="utf-8") as fh:
+                  entries = json.load(fh).get("versions", [])
+          # Drop any stale row for the version being published: a rerun
+          # rewrites the entry rather than listing the release twice.
+          entries = [e for e in entries if e.get("version", "").lstrip("v") != version.lstrip("v")]
+          entries.insert(0, {
+              "version": version.lstrip("v"),
+              "tag": tag,
+              "channel": "prerelease" if "-" in version.lstrip("v") else "stable",
+              "publishedAt": datetime.datetime.now(datetime.timezone.utc)
+                  .strftime("%Y-%m-%dT%H:%M:%SZ"),
+              "manifest": f"https://github.com/{repo}/releases/download/{tag}/latest.json",
+          })
+          catalog = {
+              "schemaVersion": 1,
+              "updatedAt": datetime.datetime.now(datetime.timezone.utc)
+                  .strftime("%Y-%m-%dT%H:%M:%SZ"),
+              "versions": entries,
+          }
+          with open(out, "w", encoding="utf-8") as fh:
+              json.dump(catalog, fh, indent=2)
+              fh.write("\n")
+          print(f"catalog: {len(entries)} version(s), newest {version}")
+          PY
 
       - name: Publish GitHub release
         env:
@@ -292,11 +383,18 @@ jobs:
           CANDIDATE: ${{ needs.resolve.outputs.candidate }}
         run: |
           set -euo pipefail
-          notes="$RUNNER_TEMP/release-notes.md"
+          notes="dist/notes.md"
+          # Every file goes up, latest.json and versions.json included: the
+          # catalog addresses a version through
+          # releases/download/<tag>/latest.json, and the catalog itself is read
+          # from releases/latest/download/versions.json, so both have to be
+          # assets of the release they describe. A .minisig travels with the
+          # artifact it signs, which the glob already pairs.
           assets=()
           for f in dist/*; do
-            [ "$(basename "$f")" = latest.json ] || assets+=("$f")
+            [ -f "$f" ] && assets+=("$f")
           done
+          test "${#assets[@]}" -gt 0
           flags=()
           [ "$CANDIDATE" = "true" ] && flags+=(--prerelease)
           if gh release view "$TAG" >/dev/null 2>&1; then

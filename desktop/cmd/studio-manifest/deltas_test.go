@@ -48,7 +48,10 @@ func TestManifestListsEachSignedDeltaFromTheMirror(t *testing.T) {
 		t.Fatal(err)
 	}
 	d, ok := m.Deltas["windows-amd64"]
-	want := "https://dl.reasonix.io/studio-v0.1.0/delta/windows-amd64/index.json.zst"
+	// Built from the mirror constant rather than a literal: what this guards is
+	// that a delta is addressed by its tag and platform with the signature
+	// beside it, not which host serves this fork's releases.
+	want := update.StudioMirror + "/studio-v0.1.0/delta/windows-amd64/" + update.DeltaIndexName
 	if !ok || d.Index.URL != want || d.Index.Sig != want+".minisig" || d.Index.Size != 11 || d.Chunks != update.StudioChunks {
 		t.Fatalf("deltas = %+v", m.Deltas)
 	}

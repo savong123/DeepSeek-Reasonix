@@ -106,7 +106,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest]
     runs-on: ${{ github.event_name == 'pull_request' && needs.changes.outputs.platform == 'false' && 'ubuntu-latest' || matrix.os }}
     env:
       RUN_STEPS: ${{ github.event_name != 'pull_request' || (needs.changes.outputs.code != 'false' && (matrix.os == 'ubuntu-latest' || needs.changes.outputs.platform != 'false')) }}
@@ -946,7 +946,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest]
     runs-on: ${{ github.event_name == 'pull_request' && needs.changes.outputs.platform == 'false' && 'ubuntu-latest' || matrix.os }}
     env:
       RUN_STEPS: ${{ github.event_name != 'pull_request' || (needs.changes.outputs.sdk != 'false' && (matrix.os == 'ubuntu-latest' || needs.changes.outputs.platform != 'false')) }}
@@ -1049,35 +1049,6 @@ jobs:
       # own concurrency is CI-blocked rather than author-verified locally.
       - name: test -race
         run: go test -race ./...
-
-  # desktop/ is a separate module, so the root macOS matrix above does not
-  # compile it against a real macOS toolchain.
-  desktop-macos:
-    needs: changes
-    if: always() && (github.event_name != 'pull_request' || (needs.changes.outputs.desktop != 'false' && needs.changes.outputs.platform != 'false'))
-    runs-on: macos-latest
-    defaults:
-      run:
-        working-directory: desktop
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-
-      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
-        with:
-          go-version-file: desktop/go.mod
-          cache: true
-          cache-dependency-path: desktop/go.sum
-
-      - name: test
-        run: go test -race ./...
-
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9
-        with:
-          version: v2.12.2
-          working-directory: desktop
-          args: --timeout=5m
-
   # The update helper's versioned-install and uninstall paths are Windows-only
   # (//go:build windows), so the ubuntu leg above never compiles them.
   desktop-windows:
@@ -1135,9 +1106,9 @@ jobs:
           args: --timeout=5m
 
       # The step above only type-checks the linux/amd64 build, so every
-      # //go:build windows and //go:build darwin file in the tree went unlinted.
-      # Both modules cross-check without a toolchain; desktop under darwin does
-      # not, because its watchdog is cgo, so that leg lives in desktop-macos.
+      # //go:build windows file in the tree went unlinted. Both modules
+      # cross-check without a toolchain; a darwin cross-build of desktop does
+      # not, because its watchdog is cgo, and this fork ships no macOS build.
       - name: golangci-lint (cross-platform build tags)
         run: |
           set -euo pipefail

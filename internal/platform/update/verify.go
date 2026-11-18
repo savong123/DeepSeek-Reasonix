@@ -12,13 +12,15 @@ import (
 	"aead.dev/minisign"
 )
 
-// publicKey is the minisign public key that desktop release artifacts are signed
-// with. The public half is safe to embed; the private half lives only in CI
-// secrets (generated with `cmd/sign genkey`). Key ID AF12CA46F4A9EBB0. If the
-// signing key is ever rotated, regenerate and update this constant in lockstep
-// with the CI secret.
-const publicKey = `untrusted comment: minisign public key: AF12CA46F4A9EBB0
-RWSw66n0RsoSr6Zhh6qt5YO95YkpCayTOCMFVDNUQSjJYwxoYngNVBSq`
+// publicKey is the minisign public key that this fork's release artifacts are
+// signed with. Upstream's key is deliberately not here: a build that accepted
+// upstream's signatures would let the official channel replace a fork build,
+// and this fork signs nothing upstream can produce. The public half is safe to
+// embed; the private half lives only in CI secrets (generated with
+// `cmd/sign genkey`). Key ID 4F8C82E4ED520BAA. If the signing key is ever
+// rotated, regenerate and update this constant in lockstep with the CI secret.
+const publicKey = `untrusted comment: minisign public key: 4F8C82E4ED520BAA
+RWSqC1Lt5IKMT2/u4gmoaE+9rWRYTql3OheYwkel4CKKR2+FWWQ4jAXv`
 
 // Verify reports whether sig (the contents of a .minisig file) is a valid minisign
 // signature of data under the embedded public key. A nil return means the artifact

@@ -163,8 +163,22 @@ Artifact names, which downstream tooling and this runbook both depend on:
 
 ### Update checks
 
-`internal/platform/update/manifest.go` pins `StudioMirror` to `https://dl.reasonix.io`, so a build from this fork checks
-upstream's catalog for a newer version and would offer to install it. Nothing in this fork publishes to that catalog.
+A build from this fork resolves updates from this repository alone. `internal/platform/update/manifest.go` names
+`StudioRepo`, and everything the updater reads is addressed under it:
 
-The release body says so. Users of these builds MUST upgrade by downloading the next release from this repository, not
-through the in-app check.
+| What | Address |
+| --- | --- |
+| Catalog | `releases/latest/download/versions.json` |
+| One version's manifest | `releases/download/<tag>/latest.json` |
+| One version's notes | `releases/download/<tag>/notes.md` |
+| Artifacts and their `.minisig` | `releases/download/<tag>/<artifact>` |
+
+`publish` writes the manifest and the catalog, signs every artifact, and uploads all of it, so a release is what the
+updater reads — nothing is fetched from upstream's mirror.
+
+The catalog is rebuilt from the previous release's copy plus the new version, which is why a published release MUST NOT
+be deleted: doing so drops its row from every later catalog, and a rollback can no longer reach it.
+
+`internal/platform/update/verify.go` embeds this fork's minisign public key (ID `4F8C82E4ED520BAA`). The private half
+lives only in the `MINISIGN_PRIVATE_KEY` and `MINISIGN_PASSWORD` repository secrets. Upstream's key is deliberately not
+accepted: a build that took upstream's signatures would let the official channel replace a fork build.

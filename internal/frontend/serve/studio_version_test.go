@@ -193,7 +193,9 @@ func TestNotesRouteKeepsADocumentOnceAndNeverAnErrorPage(t *testing.T) {
 	body := "<html>oops</html>"
 	transport := stubTransport(func(r *http.Request) (*http.Response, error) {
 		hits++
-		if r.URL.String() != "https://dl.reasonix.io/studio/notes/2.31.0.md" {
+		// The route is what this guards, not the host serving it: the notes
+		// live on their own version's release, so the path names that tag.
+		if !strings.HasSuffix(r.URL.String(), "/studio-v2.31.0/notes.md") {
 			t.Errorf("fetched %s", r.URL)
 		}
 		return &http.Response{StatusCode: http.StatusOK, Header: http.Header{"Content-Type": {contentType}}, Body: io.NopCloser(strings.NewReader(body)), Request: r}, nil

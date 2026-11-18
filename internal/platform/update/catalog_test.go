@@ -13,8 +13,11 @@ func TestStudioCatalogNamesTheStudioLine(t *testing.T) {
 	if StudioCatalog == "" {
 		t.Fatal("StudioCatalog is empty, so every Options built from it fails at fetch")
 	}
-	if !strings.Contains(StudioCatalog, "/studio/") {
-		t.Fatalf("StudioCatalog does not name the studio line (%q); its entries would name another product's artifacts", StudioCatalog)
+	// The catalog must be served by the repository this build's releases are
+	// published in. Any other address would list versions whose artifacts
+	// cannot be installed by this build.
+	if !strings.Contains(StudioCatalog, "/"+StudioRepo+"/") {
+		t.Fatalf("StudioCatalog does not name this fork's repository (%q); its entries would name another product's artifacts", StudioCatalog)
 	}
 }
 

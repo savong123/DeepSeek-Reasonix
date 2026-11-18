@@ -31,8 +31,25 @@ type Delta struct {
 	Chunks string `json:"chunks"` // base URL; a chunk is Chunks + "/" + delta.ObjectName(hash)
 }
 
-// StudioMirror is the release mirror Studio's catalog and deltas live on.
-const StudioMirror = "https://dl.reasonix.io"
+// StudioRepo is where this build's releases are published. A fork that ships
+// its own builds must answer update checks from its own release page: reading
+// upstream's catalog would offer to "upgrade" a fork build into the official
+// one, which is a different product with different defaults.
+const StudioRepo = "savong123/DeepSeek-Reasonix"
+
+// StudioReleases is the stable address of that repository's newest release.
+// GitHub resolves /releases/latest/download/<name> to the highest stable tag,
+// so the catalog keeps one URL for good rather than one per version.
+const StudioReleases = "https://github.com/" + StudioRepo + "/releases/latest/download"
+
+// StudioTagPrefix names a release's own tag, which is where a version's
+// immutable files live: the manifest, its assets and the artifact signatures.
+const StudioTagPrefix = "studio-v"
+
+// StudioMirror is the release mirror Studio's catalog and deltas live on. This
+// fork publishes no mirror; the constant keeps naming a reachable base so the
+// delta helpers stay compilable, and no release carries a delta index here.
+const StudioMirror = StudioReleases
 
 // StudioChunks is the one chunk store every Studio release shares.
 const StudioChunks = StudioMirror + "/studio/chunks"
