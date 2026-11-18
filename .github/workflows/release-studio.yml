@@ -13,6 +13,8 @@ run-name: Release Studio ${{ inputs.tag || github.ref_name }}
 #
 # Push a tag studio-vX.Y.Z to release. workflow_dispatch recovers a tag that
 # already exists.
+#
+# Fork: this file replaces the upstream release line; see docs/STUDIO_RELEASE.md.
 
 on:
   push:
