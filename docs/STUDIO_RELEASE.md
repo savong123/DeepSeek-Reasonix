@@ -179,6 +179,8 @@ updater reads — nothing is fetched from upstream's mirror.
 The catalog is rebuilt from the previous release's copy plus the new version, which is why a published release MUST NOT
 be deleted: doing so drops its row from every later catalog, and a rollback can no longer reach it.
 
-`internal/platform/update/verify.go` embeds this fork's minisign public key (ID `4F8C82E4ED520BAA`). The private half
-lives only in the `MINISIGN_PRIVATE_KEY` and `MINISIGN_PASSWORD` repository secrets. Upstream's key is deliberately not
-accepted: a build that took upstream's signatures would let the official channel replace a fork build.
+| Fact | Detail |
+| --- | --- |
+| Public key | `internal/platform/update/verify.go`, ID `4F8C82E4ED520BAA` |
+| Private key | repository secrets `MINISIGN_PRIVATE_KEY` and `MINISIGN_PASSWORD` |
+| Upstream's key | not accepted, so the official channel cannot replace a fork build |

@@ -12,13 +12,10 @@ import (
 	"aead.dev/minisign"
 )
 
-// publicKey is the minisign public key that this fork's release artifacts are
-// signed with. Upstream's key is deliberately not here: a build that accepted
-// upstream's signatures would let the official channel replace a fork build,
-// and this fork signs nothing upstream can produce. The public half is safe to
-// embed; the private half lives only in CI secrets (generated with
-// `cmd/sign genkey`). Key ID 4F8C82E4ED520BAA. If the signing key is ever
-// rotated, regenerate and update this constant in lockstep with the CI secret.
+// publicKey is the minisign key this fork's releases are signed with. Upstream's
+// is deliberately absent: accepting it would let the official channel replace a
+// fork build. Key ID 4F8C82E4ED520BAA; the private half lives only in CI
+// secrets (`cmd/sign genkey`), and a rotation updates both in lockstep.
 const publicKey = `untrusted comment: minisign public key: 4F8C82E4ED520BAA
 RWSqC1Lt5IKMT2/u4gmoaE+9rWRYTql3OheYwkel4CKKR2+FWWQ4jAXv`
 
