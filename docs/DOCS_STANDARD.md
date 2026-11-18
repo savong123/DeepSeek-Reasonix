@@ -28,7 +28,7 @@ Current areas:
 | Studio contracts and processes | `docs/STUDIO_*.md`, `docs/DOCS_STANDARD.md`, `docs/*_CONTRACT.md`, `docs/TOOL_APPROVAL_MODES.md`, `docs/CAPABILITY_DIAGNOSTICS.md`, `docs/CHECKPOINTS.md`, `docs/EXTENSION_*.md`, `docs/SUBAGENT_*.md`, `docs/SESSION_MEMORY_RETRIEVAL.md` | @esengine | @SivanCola |
 | Release lines and moving between them | `docs/ROADMAP.md`, `docs/MIGRATING.md` | @esengine | @SivanCola |
 | Kernel design proposals | `docs/design/` | @esengine | @SivanCola |
-| Release notes and release signing | `release-notes/`, `.signpath/`, `release-studio.yml` | @esengine | @SivanCola |
+| Release notes and the release workflow | `release-notes/`, `docs/STUDIO_RELEASE.md`, `.github/workflows/release-studio.yml` | @esengine | @SivanCola |
 
 ## 2. Document classes
 
