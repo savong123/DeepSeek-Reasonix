@@ -2,8 +2,17 @@
   <img src="docs/logo-ghost-wave-effect.svg" alt="Reasonix" width="360"/>
 </p>
 
-> [!WARNING]
-> **Reasonix is no longer maintained as of 2026-11-12.** The final release is v2.61.0; there will be no further releases, fixes or issue triage. The project is MIT-licensed and forks are welcome. See the [announcement](https://github.com/esengine/DeepSeek-Reasonix/issues/15109).
+> [!IMPORTANT]
+> **This repository is a third-party fork, not the Reasonix project.**
+>
+> It forks [esengine/DeepSeek-Reasonix](https://github.com/esengine/DeepSeek-Reasonix) to publish its own Windows
+> builds, which upstream stopped producing when it announced the end of maintenance on 2026-11-12.
+>
+> It is **not affiliated with, endorsed by, or supported by** the upstream authors, and nothing published here is
+> their release.
+>
+> The code stays under the MIT License. Every copyright notice in [LICENSE](./LICENSE) and in the source headers
+> belongs to the original authors. See [Fork and licensing](#fork-and-licensing) for what changed here.
 
 <p align="center">
   <strong>English</strong>
@@ -18,23 +27,15 @@
   &nbsp;·&nbsp;
   <a href="./docs/SPEC.md">Spec</a>
   &nbsp;·&nbsp;
-  <a href="https://esengine.github.io/DeepSeek-Reasonix/">Website</a>
+  <a href="https://esengine.github.io/DeepSeek-Reasonix/">Upstream website</a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/esengine/DeepSeek-Reasonix/releases?q=studio-v&expanded=true"><img src="https://img.shields.io/github/v/release/esengine/DeepSeek-Reasonix.svg?filter=studio-v*&include_prereleases&style=flat-square&color=8250df&labelColor=161b22&label=studio%202.x" alt="Reasonix Studio 2.x"/></a>
-  <a href="https://www.npmjs.com/package/reasonix"><img src="https://img.shields.io/npm/v/reasonix.svg?style=flat-square&color=cb3837&labelColor=161b22&logo=npm&logoColor=white" alt="npm version"/></a>
-  <a href="https://github.com/esengine/DeepSeek-Reasonix/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/esengine/DeepSeek-Reasonix/ci.yml?style=flat-square&label=ci&labelColor=161b22&logo=githubactions&logoColor=white" alt="CI"/></a>
+  <a href="https://github.com/savong123/DeepSeek-Reasonix/releases?q=studio-v&expanded=true"><img src="https://img.shields.io/github/v/release/savong123/DeepSeek-Reasonix.svg?filter=studio-v*&include_prereleases&style=flat-square&color=8250df&labelColor=161b22&label=studio%202.x%20fork" alt="Reasonix Studio 2.x (fork build)"/></a>
+  <a href="https://github.com/savong123/DeepSeek-Reasonix/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/savong123/DeepSeek-Reasonix/ci.yml?style=flat-square&label=ci&labelColor=161b22&logo=githubactions&logoColor=white" alt="CI"/></a>
   <a href="./LICENSE"><img src="https://img.shields.io/npm/l/reasonix.svg?style=flat-square&color=8b949e&labelColor=161b22" alt="license"/></a>
-  <a href="https://www.npmjs.com/package/reasonix"><img src="https://img.shields.io/npm/dm/reasonix.svg?style=flat-square&color=3fb950&labelColor=161b22&label=downloads" alt="downloads"/></a>
-  <a href="https://github.com/esengine/DeepSeek-Reasonix/stargazers"><img src="https://img.shields.io/github/stars/esengine/DeepSeek-Reasonix.svg?style=flat-square&color=dbab09&labelColor=161b22&logo=github&logoColor=white" alt="GitHub stars"/></a>
-  <a href="https://atomgit.com/esengine/DeepSeek-Reasonix"><img src="https://atomgit.com/esengine/DeepSeek-Reasonix/star/badge.svg" alt="AtomGit stars"/></a>
+  <a href="https://github.com/esengine/DeepSeek-Reasonix/stargazers"><img src="https://img.shields.io/github/stars/esengine/DeepSeek-Reasonix.svg?style=flat-square&color=dbab09&labelColor=161b22&logo=github&logoColor=white" alt="Upstream GitHub stars"/></a>
   <a href="https://github.com/esengine/DeepSeek-Reasonix/graphs/contributors"><img src="https://img.shields.io/github/contributors/esengine/DeepSeek-Reasonix.svg?style=flat-square&color=bc8cff&labelColor=161b22&logo=github&logoColor=white" alt="contributors"/></a>
-</p>
-
-<p align="center">
-  <a href="https://trendshift.io/repositories/27020?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-27020" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/27020/monthly?language=Go" alt="esengine/DeepSeek-Reasonix | Trendshift" width="250" height="55"/></a>
-  <a href="https://trendshift.io/repositories/27020?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-27020" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/27020" alt="esengine/DeepSeek-Reasonix | Trendshift" width="250" height="55"/></a>
 </p>
 
 <br/>
@@ -42,7 +43,7 @@
 <p align="center"><strong>Open source · MIT · runs on your computer, model of your choice</strong></p>
 <h3 align="center">An open-source coding agent for your terminal, desktop, browser and editor.</h3>
 <p align="center">It reads your project, edits files and runs commands and tests. Have it ask before each step, or work on its own within limits you set. Files its edit tools changed can be rewound. New here? Start with the Studio desktop app.</p>
-<p align="center">Maintained by <strong>Huahui Yu</strong>.</p>
+<p align="center">Written by <strong>Huahui Yu</strong> (esengine) and the Reasonix contributors. This fork is maintained by <strong>savong123</strong>.</p>
 
 <br/>
 
@@ -62,7 +63,7 @@ You pick the model: a DeepSeek preset is built in, any OpenAI-compatible service
 
 Download, add a model key, open a project. New here? Start with the Studio desktop app.
 
-1. Download and install the desktop app, Reasonix Studio, from the [releases page](https://github.com/esengine/DeepSeek-Reasonix/releases?q=studio-v&expanded=true).
+1. Download and install the desktop app, Reasonix Studio, from [this fork's releases page](https://github.com/savong123/DeepSeek-Reasonix/releases).
 2. Open it and enter your model provider and key when asked.
 3. Open your project folder and write what you want, for example "add retry on failure to the http client".
 4. At the level you chose, it stops and asks before anything that needs your say-so. Allow it to continue, or refuse.
@@ -94,7 +95,7 @@ Reasonix ships on two lines. See the [version roadmap announcement](https://gith
 
 | Line | Branch | Status | Get it |
 | --- | --- | --- | --- |
-| **Reasonix 2.x** | `studio` (this branch) | Active development | [Studio releases](https://github.com/esengine/DeepSeek-Reasonix/releases?q=studio-v&expanded=true) |
+| **Reasonix 2.x** | `studio` (this branch) | Frozen upstream; fork builds Windows | [Studio releases](https://github.com/savong123/DeepSeek-Reasonix/releases) |
 | **Reasonix 1.x** | [`main-v2`](https://github.com/esengine/DeepSeek-Reasonix/tree/main-v2) | Maintenance / stable | `npm i -g reasonix` · [desktop download](https://reasonix.io/?download=desktop#start) |
 
 - **Want something stable?** Stay on 1.x. It keeps receiving bug fixes,
@@ -137,19 +138,21 @@ Studio, and editor integrations all run the same local Reasonix engine.
 
 ### Reasonix Studio (2.x)
 
-Download the package for your platform from the latest
-[Studio release](https://github.com/esengine/DeepSeek-Reasonix/releases?q=studio-v&expanded=true)
-(tagged `studio-v2.*`; candidates such as `-rc.N` are marked as
-pre-releases):
+**This fork builds Windows only.** Upstream's release line also produced
+macOS and Linux packages and stopped doing so when it stopped releasing; for
+those platforms, use an upstream release or build from source.
+
+Download from [this fork's releases](https://github.com/savong123/DeepSeek-Reasonix/releases)
+(tagged `studio-v*`; a tag carrying `-rc.N` is a pre-release):
 
 | Platform | Package | Architecture |
 | --- | --- | --- |
-| macOS | `.dmg` or `.zip` | Apple Silicon (`arm64`) / Intel (`amd64`) |
 | Windows | Installer `-installer.exe` or portable `.zip` | x64 |
-| Linux | `.deb`, `.rpm`, or `.AppImage` (download only) | x64 (`amd64`) / ARM64 (`arm64`, aarch64) |
+| macOS, Linux | not built here — see above | — |
 
-Every package ships with a `.minisig` signature, and the release carries
-`SHA256SUMS`. Once installed, Studio updates itself in place.
+Each Windows package ships with a `.minisig` signature, and the release
+carries `SHA256SUMS` and the `latest.json` this fork's updater reads. Once
+installed, Studio updates itself in place from this repository.
 
 The same release also carries the 2.x `reasonix` CLI as archives for
 `darwin|linux|windows × amd64|arm64`.
@@ -180,12 +183,18 @@ selection, and workspace sessions. Install the 1.x CLI first.
 
 ### Build from source
 
-Clone the repository; `studio` builds 2.x and `main-v2` builds 1.x:
+Clone this fork; `studio` is the only branch it carries, and it builds 2.x:
 
 ```sh
-git clone https://github.com/esengine/DeepSeek-Reasonix.git
+git clone https://github.com/savong123/DeepSeek-Reasonix.git
 cd DeepSeek-Reasonix
-git switch studio
+```
+
+To build 1.x, or to merge upstream changes, add the original repository:
+
+```sh
+git remote add upstream https://github.com/esengine/DeepSeek-Reasonix.git
+git fetch upstream main-v2
 ```
 
 #### CLI
@@ -252,17 +261,36 @@ For advanced CLI usage and configuration, see the **[CLI reference](./docs/CLI.m
   [Extension Protocol](./docs/EXTENSION_PROTOCOL.md) ·
   [Go SDK and starter](./sdk/go/README.md)
 
-## Star History
+## Fork and licensing
 
-<a href="https://www.star-history.com/?repos=esengine%2FDeepSeek-Reasonix&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/esengine/DeepSeek-Reasonix/star-history/assets/star-history/star-history-dark.svg" />
-   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/esengine/DeepSeek-Reasonix/star-history/assets/star-history/star-history-light.svg" />
-   <img alt="Star History Chart" src="https://raw.githubusercontent.com/esengine/DeepSeek-Reasonix/star-history/assets/star-history/star-history-light.svg" />
- </picture>
-</a>
+This repository is `savong123/DeepSeek-Reasonix`, a fork of
+[esengine/DeepSeek-Reasonix](https://github.com/esengine/DeepSeek-Reasonix).
 
-<br/>
+Upstream's last release was v2.61.0, and it was declared unmaintained on 2026-11-12. The fork carries on from that
+commit for one purpose: producing a Windows build its own maintainer can install.
+
+| Question | Answer |
+| --- | --- |
+| Is this the official project? | No. Upstream is `esengine/DeepSeek-Reasonix`; nothing here is published by its authors. |
+| May it exist at all? | Yes. Reasonix is MIT-licensed and its own README invited forks. |
+| Whose copyright? | The original authors'. `LICENSE` is unchanged and every source header keeps its notice. |
+| What did the fork change? | The release line and the update address — see below. |
+| Are issues and support offered? | No. This fork has no issue tracker and answers no support requests. |
+
+The fork's own changes are confined to packaging:
+
+- `.github/workflows/` keeps `ci.yml`, `studio.yml`, `acp-conformance.yml`, and a rewritten `release-studio.yml`
+  that builds Windows only.
+- Upstream's release line also signed with a Certum certificate, built macOS and Linux packages, mirrored to a CDN,
+  and published npm and Homebrew channels. None of that is reproduced here.
+- `internal/platform/update/` resolves updates from this repository instead of upstream's mirror, and embeds this
+  fork's own minisign key so an upstream signature cannot be installed over a fork build.
+- `docs/STUDIO_RELEASE.md` describes the release procedure that actually runs here.
+- Everything else in the tree is upstream's code at the fork point.
+
+If you want the original project, or its 1.x line, go to
+[esengine/DeepSeek-Reasonix](https://github.com/esengine/DeepSeek-Reasonix). Builds from this fork are not endorsed by,
+affiliated with, or supported by its authors.
 
 ## Acknowledgments
 
@@ -295,5 +323,5 @@ Special thanks to [**Bernardxu123**](https://github.com/Bernardxu123) for design
 <p align="center">
   <sub>MIT — see <a href="./LICENSE">LICENSE</a></sub>
   <br/>
-  <sub>Built by the community at <a href="https://github.com/esengine/DeepSeek-Reasonix/graphs/contributors">esengine/DeepSeek-Reasonix</a></sub>
+  <sub>Original project by <a href="https://github.com/esengine/DeepSeek-Reasonix/graphs/contributors">esengine/DeepSeek-Reasonix</a> · this fork by <a href="https://github.com/savong123">savong123</a></sub>
 </p>

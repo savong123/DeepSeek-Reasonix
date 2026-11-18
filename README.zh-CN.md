@@ -2,8 +2,17 @@
   <img src="docs/logo-ghost-wave-effect.svg" alt="Reasonix" width="360"/>
 </p>
 
-> [!WARNING]
-> **Reasonix 已于 2026-11-12 起停止维护。** 最后一个版本为 v2.61.0，此后不再发布新版本、修复缺陷或处理 Issue。项目采用 MIT 协议，欢迎 fork。详见[公告](https://github.com/esengine/DeepSeek-Reasonix/issues/15109)。
+> [!IMPORTANT]
+> **本仓库是第三方分支，不是 Reasonix 官方项目。**
+>
+> 它 fork 自 [esengine/DeepSeek-Reasonix](https://github.com/esengine/DeepSeek-Reasonix)，只用于发布自己的
+> Windows 构建。上游已于 2026-11-12 宣布停止维护，最后一个上游版本为 v2.61.0
+> （见[公告](https://github.com/esengine/DeepSeek-Reasonix/issues/15109)）。
+>
+> 它**与上游作者无关，也未获其背书或支持**，这里发布的任何内容都不代表上游的正式版本。
+>
+> 代码仍适用 MIT 协议。[LICENSE](./LICENSE) 与各源文件中的版权声明均归原作者所有。具体改动见
+> [分支与授权](#分支与授权)。
 
 <p align="center">
   <a href="./README.md">English</a>
@@ -18,23 +27,15 @@
   &nbsp;·&nbsp;
   <a href="./docs/SPEC.md">规格</a>
   &nbsp;·&nbsp;
-  <a href="https://esengine.github.io/DeepSeek-Reasonix/">官方网站</a>
+  <a href="https://esengine.github.io/DeepSeek-Reasonix/">上游官网</a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/esengine/DeepSeek-Reasonix/releases?q=studio-v&expanded=true"><img src="https://img.shields.io/github/v/release/esengine/DeepSeek-Reasonix.svg?filter=studio-v*&include_prereleases&style=flat-square&color=8250df&labelColor=161b22&label=studio%202.x" alt="Reasonix Studio 2.x"/></a>
-  <a href="https://www.npmjs.com/package/reasonix"><img src="https://img.shields.io/npm/v/reasonix.svg?style=flat-square&color=cb3837&labelColor=161b22&logo=npm&logoColor=white" alt="npm version"/></a>
-  <a href="https://github.com/esengine/DeepSeek-Reasonix/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/esengine/DeepSeek-Reasonix/ci.yml?style=flat-square&label=ci&labelColor=161b22&logo=githubactions&logoColor=white" alt="CI"/></a>
+  <a href="https://github.com/savong123/DeepSeek-Reasonix/releases?q=studio-v&expanded=true"><img src="https://img.shields.io/github/v/release/savong123/DeepSeek-Reasonix.svg?filter=studio-v*&include_prereleases&style=flat-square&color=8250df&labelColor=161b22&label=studio%202.x%20fork" alt="Reasonix Studio 2.x（分支构建）"/></a>
+  <a href="https://github.com/savong123/DeepSeek-Reasonix/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/savong123/DeepSeek-Reasonix/ci.yml?style=flat-square&label=ci&labelColor=161b22&logo=githubactions&logoColor=white" alt="CI"/></a>
   <a href="./LICENSE"><img src="https://img.shields.io/npm/l/reasonix.svg?style=flat-square&color=8b949e&labelColor=161b22" alt="license"/></a>
-  <a href="https://www.npmjs.com/package/reasonix"><img src="https://img.shields.io/npm/dm/reasonix.svg?style=flat-square&color=3fb950&labelColor=161b22&label=downloads" alt="downloads"/></a>
   <a href="https://github.com/esengine/DeepSeek-Reasonix/stargazers"><img src="https://img.shields.io/github/stars/esengine/DeepSeek-Reasonix.svg?style=flat-square&color=dbab09&labelColor=161b22&logo=github&logoColor=white" alt="GitHub stars"/></a>
-  <a href="https://atomgit.com/esengine/DeepSeek-Reasonix"><img src="https://atomgit.com/esengine/DeepSeek-Reasonix/star/badge.svg" alt="AtomGit stars"/></a>
   <a href="https://github.com/esengine/DeepSeek-Reasonix/graphs/contributors"><img src="https://img.shields.io/github/contributors/esengine/DeepSeek-Reasonix.svg?style=flat-square&color=bc8cff&labelColor=161b22&logo=github&logoColor=white" alt="contributors"/></a>
-</p>
-
-<p align="center">
-  <a href="https://trendshift.io/repositories/27020?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-27020" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/27020/monthly?language=Go" alt="esengine/DeepSeek-Reasonix | Trendshift" width="250" height="55"/></a>
-  <a href="https://trendshift.io/repositories/27020?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-27020" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/27020" alt="esengine/DeepSeek-Reasonix | Trendshift" width="250" height="55"/></a>
 </p>
 
 <br/>
@@ -42,7 +43,7 @@
 <p align="center"><strong>开源 · MIT · 程序跑在你电脑上，模型自选</strong></p>
 <h3 align="center">终端、桌面、浏览器、编辑器里都能用的 AI 编程助手。</h3>
 <p align="center">它会读你的项目、改文件、跑命令和测试。每一步先问你，或在你划定的范围内自己做，由你选；它用编辑工具改过的文件可以退回去。第一次用，从桌面应用 Studio 开始。</p>
-<p align="center">维护者：<strong>Huahui Yu</strong>。</p>
+<p align="center">原作者：<strong>Huahui Yu</strong>（esengine）及 Reasonix 贡献者。本分支由 <strong>savong123</strong> 维护。</p>
 
 ## 它是什么
 
@@ -60,7 +61,7 @@ Reasonix 是一个开源的 AI 编程助手。程序跑在你的电脑上；AI �
 
 下载、填模型密钥、打开项目。第一次用，从桌面应用 Studio 开始。
 
-1. 从[发布页](https://github.com/esengine/DeepSeek-Reasonix/releases?q=studio-v&expanded=true)下载并安装桌面应用 Reasonix Studio。
+1. 从[本分支的发布页](https://github.com/savong123/DeepSeek-Reasonix/releases)下载并安装桌面应用 Reasonix Studio。
 2. 打开应用，按提示填入模型服务商和密钥。
 3. 打开你的项目文件夹，写下想做的事，例如“给 http 客户端加上失败重试”。
 4. 按你选的档位，该问你的操作它会先停下来问；同意就继续，不同意就拒绝。
@@ -92,7 +93,7 @@ Reasonix 分为两条版本线，调整的原因见[版本路线公告](https://
 
 | 版本线 | 分支 | 状态 | 获取方式 |
 | --- | --- | --- | --- |
-| **Reasonix 2.x** | `studio`（当前分支） | 活跃开发 | [Studio 发布页](https://github.com/esengine/DeepSeek-Reasonix/releases?q=studio-v&expanded=true) |
+| **Reasonix 2.x** | `studio`（当前分支） | 上游已冻结；本分支只出 Windows 构建 | [Studio 发布页](https://github.com/savong123/DeepSeek-Reasonix/releases) |
 | **Reasonix 1.x** | [`main-v2`](https://github.com/esengine/DeepSeek-Reasonix/tree/main-v2) | 维护 / 稳定 | `npm i -g reasonix` · [桌面端下载](https://reasonix.io/?download=desktop#start) |
 
 - **想要稳定**：继续使用 1.x。它会持续收到 Bug 修复、Provider / API 兼容、
@@ -127,17 +128,19 @@ Reasonix 分为两条版本线，调整的原因见[版本路线公告](https://
 
 ### Reasonix Studio（2.x）
 
-从最新的 [Studio 发布](https://github.com/esengine/DeepSeek-Reasonix/releases?q=studio-v&expanded=true)
-下载对应平台的安装包（标签为 `studio-v2.*`；`-rc.N` 等候选版本标为预发布）：
+**本分支只构建 Windows。** 上游的发布线还会产出 macOS 与 Linux 包，随其停止发布而一并停止；
+这些平台请使用上游发布的版本，或自行从源码构建。
+
+从[本分支的发布页](https://github.com/savong123/DeepSeek-Reasonix/releases)下载
+（标签为 `studio-v*`；带 `-rc.N` 的是预发布）：
 
 | 平台 | 安装包 | 架构 |
 | --- | --- | --- |
-| macOS | `.dmg` 或 `.zip` | Apple Silicon（`arm64`）/ Intel（`amd64`） |
 | Windows | 安装器 `-installer.exe` 或便携 `.zip` | x64 |
-| Linux | `.deb`、`.rpm` 或 `.AppImage`（只提供下载） | x64（`amd64`）/ ARM64（`arm64`，aarch64） |
+| macOS、Linux | 本分支不构建，见上 | — |
 
-每个安装包都附带 `.minisig` 签名，发布页另有 `SHA256SUMS`。安装后 Studio 会在
-应用内自行更新。
+每个 Windows 包都附带 `.minisig` 签名，发布页另有 `SHA256SUMS` 和本分支更新器读取的
+`latest.json`。安装后 Studio 会从本仓库应用内自行更新。
 
 同一个发布页也提供 2.x 的 `reasonix` CLI 归档（`darwin|linux|windows × amd64|arm64`）。
 
@@ -164,12 +167,18 @@ Windows 安装器使用 Certum 代码签名证书签名。
 
 ### 从源码构建
 
-克隆仓库；`studio` 构建 2.x，`main-v2` 构建 1.x：
+克隆本分支；它只带 `studio` 一个分支，用于构建 2.x：
 
 ```sh
-git clone https://github.com/esengine/DeepSeek-Reasonix.git
+git clone https://github.com/savong123/DeepSeek-Reasonix.git
 cd DeepSeek-Reasonix
-git switch studio
+```
+
+需要构建 1.x 或合并上游更新时，加上原仓库：
+
+```sh
+git remote add upstream https://github.com/esengine/DeepSeek-Reasonix.git
+git fetch upstream main-v2
 ```
 
 #### CLI
@@ -233,17 +242,31 @@ CLI 进阶用法和详细配置见 **[CLI 命令参考](./docs/CLI.zh-CN.md)**�
   [Extension Protocol](./docs/EXTENSION_PROTOCOL.md) ·
   [Go SDK 与 starter](./sdk/go/README.md)
 
-## Star 趋势
+## 分支与授权
 
-<a href="https://www.star-history.com/?repos=esengine%2FDeepSeek-Reasonix&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/esengine/DeepSeek-Reasonix/star-history/assets/star-history/star-history-dark.svg" />
-   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/esengine/DeepSeek-Reasonix/star-history/assets/star-history/star-history-light.svg" />
-   <img alt="Star History Chart" src="https://raw.githubusercontent.com/esengine/DeepSeek-Reasonix/star-history/assets/star-history/star-history-light.svg" />
- </picture>
-</a>
+本仓库是 `savong123/DeepSeek-Reasonix`，fork 自
+[esengine/DeepSeek-Reasonix](https://github.com/esengine/DeepSeek-Reasonix)。上游最后一个版本为 v2.61.0，
+并于 2026-11-12 宣布停止维护；本分支从该提交继续，只为一件事服务：产出维护者自己能装的 Windows 构建。
 
-<br/>
+| 问题 | 回答 |
+| --- | --- |
+| 这是官方项目吗？ | 不是。官方是 `esengine/DeepSeek-Reasonix`，这里的内容不是其作者发布的。 |
+| 允许 fork 吗？ | 允许。Reasonix 采用 MIT 协议，上游 README 本身也欢迎 fork。 |
+| 版权归谁？ | 归原作者。`LICENSE` 未作任何改动，各源文件的版权声明原样保留。 |
+| 本分支改了什么？ | 只改发布流程与更新地址，见下。 |
+| 提供 Issue 和支持吗？ | 不提供。本分支没有 issue 跟踪，也不回复支持请求。 |
+
+本分支自身的改动限于打包：
+
+- `.github/workflows/` 只保留 `ci.yml`、`studio.yml`、`acp-conformance.yml`，以及重写后的 `release-studio.yml`（只构建 Windows）。
+  上游的发布线还会用 Certum 证书签名、构建 macOS 与 Linux 包、同步 CDN、发布 npm 与 Homebrew 渠道；这些在本分支都没有复现。
+- `internal/platform/update/` 从本仓库而非上游镜像解析更新，并内嵌本分支自己的 minisign 公钥，
+  因此上游的签名无法覆盖本分支的构建。
+- `docs/STUDIO_RELEASE.md` 描述的是这里实际运行的发布流程。
+- 其余代码即 fork 时点的上游代码。
+
+如需原项目或其 1.x 版本，请前往
+[esengine/DeepSeek-Reasonix](https://github.com/esengine/DeepSeek-Reasonix)。本分支的构建未经其作者背书、关联或支持。
 
 ## 致谢
 
@@ -276,5 +299,5 @@ CLI 进阶用法和详细配置见 **[CLI 命令参考](./docs/CLI.zh-CN.md)**�
 <p align="center">
   <sub>MIT —— 见 <a href="./LICENSE">LICENSE</a></sub>
   <br/>
-  <sub>由 <a href="https://github.com/esengine/DeepSeek-Reasonix/graphs/contributors">esengine/DeepSeek-Reasonix</a> 社区共建</sub>
+  <sub>原作者与社区：<a href="https://github.com/esengine/DeepSeek-Reasonix/graphs/contributors">esengine/DeepSeek-Reasonix</a> · 本分支：<a href="https://github.com/savong123">savong123</a></sub>
 </p>
