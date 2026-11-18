@@ -315,7 +315,18 @@ jobs:
             echo "::error::MINISIGN_PRIVATE_KEY is not configured, so no artifact could be signed"
             exit 1
           fi
-          go run ./cmd/sign ../dist/ReasonixStudio-*
+          # The tool takes a subcommand first, then the files. Signatures are
+          # skipped: a rerun meets the ones the first attempt wrote, and
+          # signing a .minisig would only produce a .minisig.minisig.
+          files=()
+          for f in ../dist/ReasonixStudio-*; do
+            case "$f" in
+              *.minisig) continue ;;
+            esac
+            files+=("$f")
+          done
+          test "${#files[@]}" -gt 0
+          go run ./cmd/sign sign "${files[@]}"
 
       - name: Write latest.json
         working-directory: desktop
