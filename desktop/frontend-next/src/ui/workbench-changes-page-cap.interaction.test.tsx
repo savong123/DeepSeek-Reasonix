@@ -38,7 +38,7 @@ describe("the changes page with a workspace too large to draw whole", () => {
 
   it("shows more rows on request, and stages every change rather than only the drawn ones", async () => {
     const user = userEvent.setup();
-    const { port, stage } = draw(many(5000));
+    const { stage } = draw(many(5000));
     const before = rowCount();
     await user.click(screen.getByRole("button", { name: /再显示/ }));
     expect(rowCount()).toBeGreaterThan(before);
