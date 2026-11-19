@@ -259,9 +259,9 @@ jobs:
         env:
           BASE_REF: ${{ github.base_ref }}
         run: |
-          paths="desktop/frontend-next internal/frontend/serve internal/platform/remotecloud internal/platform/account tools/relayfake cmd/reasonix-studio-host"
+          paths=(desktop/frontend-next internal/frontend/serve internal/platform/remotecloud internal/platform/account tools/relayfake cmd/reasonix-studio-host)
           if [ "$GITHUB_EVENT_NAME" = "pull_request" ] &&
-             git diff --quiet "origin/$BASE_REF...HEAD" -- $paths; then
+             git diff --quiet "origin/$BASE_REF...HEAD" -- "${paths[@]}"; then
             echo "run=false" >> "$GITHUB_OUTPUT"
           else
             echo "run=true" >> "$GITHUB_OUTPUT"
@@ -520,11 +520,14 @@ jobs:
       - name: Artifacts carry the release architecture
         run: |
           ls -la dist
-          if ls dist | grep -q -- '-x64'; then
+          shopt -s nullglob
+          old=(dist/*-x64*)
+          if ((${#old[@]})); then
             echo "::error::an artifact still names x64; studio-manifest reads names as GOARCH"
             exit 1
           fi
-          if ! ls dist | grep -q -- "-${{ matrix.platform }}-${{ matrix.arch }}"; then
+          matching=(dist/*-"${{ matrix.platform }}-${{ matrix.arch }}"*)
+          if ((${#matching[@]} == 0)); then
             echo "::error::no artifact named for ${{ matrix.platform }}-${{ matrix.arch }}"
             exit 1
           fi
@@ -628,11 +631,15 @@ jobs:
       # inflates the count the release uses to refuse a partial publish.
       - name: No electron-updater metadata
         run: |
-          if ls dist | grep -qiE '^(latest|beta|alpha).*\.yml$'; then
+          shopt -s nullglob nocaseglob
+          metadata=(dist/latest*.yml dist/beta*.yml dist/alpha*.yml)
+          if ((${#metadata[@]})); then
             echo "::error::electron-updater metadata was published beside the manifest channel"
             exit 1
           fi
-          if ls dist | grep -q '\.blockmap$'; then
+          shopt -u nocaseglob
+          blockmaps=(dist/*.blockmap)
+          if ((${#blockmaps[@]})); then
             echo "::error::a .blockmap ships under the release prefix; set differentialPackage: false"
             exit 1
           fi
@@ -668,8 +675,12 @@ jobs:
           app=$(find dist -maxdepth 2 -name '*.app' | head -1)
           echo "app: $app"
           ls "$app/Contents"
-          ls "$app/Contents/Resources" | head -20
-          ls "$app/Contents/Frameworks" | head -20
+          shopt -s nullglob
+          resources=("$app/Contents/Resources/"*)
+          frameworks=("$app/Contents/Frameworks/"*)
+          for file in "${resources[@]:0:20}" "${frameworks[@]:0:20}"; do
+            printf '%s\n' "${file##*/}"
+          done
 
       # The end of the contract: not that the name parses, but that the manifest
       # keys the artifact under the platform this runner actually is. The tool
