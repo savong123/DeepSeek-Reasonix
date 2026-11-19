@@ -26,7 +26,12 @@ const startsOpen = (c: WorkspaceChange) => c.status !== "A" && c.status !== "??"
 // double the list, so it becomes a tag in the file's own header.
 const MANY_FILES = 8;
 
-/** Every changed file of the workspace's own repository on one page, each with
+// The rows drawn at once. A row here is a whole diff section that fetches its
+// own diff when it opens, so a workspace with a hundred thousand changes draws
+// one page of them and offers the rest on request.
+const ROW_PAGE = 200;
+
+/** A page of the workspace's own repository's changed files, each with
  *  its diff under a header that stages it, opens it or throws the change away. */
 export function WorkbenchChangesPage({ port, changes, branch, shown, remote, onOpen, onChanged }: Props) {
   const refresh = () => onChanged?.();
@@ -34,6 +39,7 @@ export function WorkbenchChangesPage({ port, changes, branch, shown, remote, onO
   const push = usePushCard(port, undefined, refresh);
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState("");
+  const [limit, setLimit] = useState(ROW_PAGE);
   const settled = changes.length > 0 && changes.every((c) => c.staged && !c.unstaged);
   const added = changes.reduce((n, c) => n + (c.insertions ?? 0), 0);
   const removed = changes.reduce((n, c) => n + (c.deletions ?? 0), 0);
@@ -70,11 +76,19 @@ export function WorkbenchChangesPage({ port, changes, branch, shown, remote, onO
       {failure && <p className="workbench-error" role="alert">{failure}</p>}
       <div className="wb-changes-body">
         {changes.length === 0 && <p className="workbench-empty">{t("workbench.no_changes")}</p>}
-        {changes.map((c) => (
+        {changes.slice(0, limit).map((c) => (
           <ChangedFile key={c.path} port={port} change={c} shown={shown} busy={busy} many={many} onOpen={onOpen}
             onStage={(unstage) => void run(() => port.stageChanges({ paths: [c.path], unstage }))}
             onDiscard={() => void run(() => port.discardChange({ path: c.path }))} />
         ))}
+        {changes.length > limit && (
+          <div className="workbench-change-more">
+            <span>{t("workbench.n_more_not_shown", { n: changes.length - limit })}</span>
+            <button type="button" className="btn sm" data-weak="" data-action="workbench.more-changes" onClick={() => setLimit((n) => n + ROW_PAGE)}>
+              {t("workbench.show_n_more", { n: ROW_PAGE })}
+            </button>
+          </div>
+        )}
         {changes.length > 0 && <p className="wb-changes-hint">{t("workbench.changes_page_hint")}</p>}
       </div>
     </div>
