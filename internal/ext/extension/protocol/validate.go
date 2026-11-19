@@ -57,7 +57,7 @@ func init() {
 }
 
 // EnumValues returns the frozen wire values of every string enum DTO type,
-// keyed by the Go type name (e.g. "InterceptEvent" → the 17 hook points). It
+// keyed by the Go type name (e.g. "InterceptEvent" → the registered hook points). It
 // is the exported form of enumTypes for code generators: the strict decoder,
 // the JSON Schema, and the SDK DTO mirror all draw from this one table.
 func EnumValues() map[string][]string {

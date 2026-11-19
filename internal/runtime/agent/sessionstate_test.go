@@ -50,6 +50,7 @@ var sessionCarryOver = map[string]bool{
 var windowReset = map[string]bool{
 	"compactionMu":    true,
 	"compactionState": true,
+	"liveGrowth":      true,
 	"cacheState":      true,
 	"compaction":      true,
 	"coveredHash":     true,

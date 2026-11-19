@@ -20,7 +20,7 @@ import (
 
 // Enum helpers
 
-// InterceptEvents returns the 17 frozen hook point names, sorted.
+// InterceptEvents returns the registered hook point names, sorted.
 func InterceptEvents() []string {
 	out := []string{
 		string(EventSessionStart), string(EventSessionEnd), string(EventSessionLoad),
@@ -28,7 +28,7 @@ func InterceptEvents() []string {
 		string(EventAgentBeforeStart), string(EventSystemPromptBuild), string(EventContextPrepare),
 		string(EventProviderRequest), string(EventProviderResponse), string(EventToolBefore),
 		string(EventToolAfter), string(EventPermissionDecision), string(EventCompactionPrepare),
-		string(EventCompactionComplete), string(EventFrontendEvent),
+		string(EventCompactionComplete), string(EventCompactionLive), string(EventFrontendEvent),
 	}
 	sortStrings(out)
 	return out
@@ -41,7 +41,7 @@ func validInterceptEvent(event InterceptEvent) bool {
 		EventSystemPromptBuild, EventContextPrepare, EventProviderRequest,
 		EventProviderResponse, EventToolBefore, EventToolAfter,
 		EventPermissionDecision, EventCompactionPrepare, EventCompactionComplete,
-		EventFrontendEvent:
+		EventCompactionLive, EventFrontendEvent:
 		return true
 	}
 	return false

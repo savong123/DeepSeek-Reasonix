@@ -873,6 +873,7 @@ func (a *Agent) Run(ctx context.Context, input string) (runErr error) {
 	state.runLimitHostOwned = runLimitHostOwned
 	state.workDurationMs = workDurationMs
 	err := a.runToolLoop(ctx, state)
+	a.noteLiveCompactAnswer(ctx, state.answeredMs, err)
 	report(state.answeredMs, err)
 	return err
 }

@@ -377,6 +377,7 @@ func assemble(ctx context.Context, logs, handshakeTo io.Writer, shell shellIdent
 		fmt.Fprintln(logs, "reasonix-studio-host: config upgrade:", err)
 	}
 	phases.mark(startupConfigUpgrade)
+	provisionStudioBundles(logs)
 	cfg, err := config.Load()
 	phases.mark(startupConfig)
 	if err != nil {

@@ -250,12 +250,6 @@ type MCPServer struct {
 	Imported    bool              `json:"imported,omitempty"`
 }
 
-// State is persisted at <Reasonix home>/plugin-packages.json.
-type State struct {
-	Version int               `json:"version"`
-	Plugins []InstalledPlugin `json:"plugins"`
-}
-
 type InstalledPlugin struct {
 	Name         string `json:"name"`
 	Source       string `json:"source,omitempty"`

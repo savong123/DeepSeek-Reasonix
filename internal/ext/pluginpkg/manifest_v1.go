@@ -365,6 +365,7 @@ var runtimeInterceptorPoints = map[string]bool{
 	"permission.decision": true,
 	"compaction.prepare":  true,
 	"compaction.complete": true,
+	"compaction.live":     true,
 	"frontend.event":      true,
 }
 

@@ -105,6 +105,7 @@ type InterceptEvent string
 const (
 	EventAgentBeforeStart   InterceptEvent = "agent.before_start"
 	EventCompactionComplete InterceptEvent = "compaction.complete"
+	EventCompactionLive     InterceptEvent = "compaction.live"
 	EventCompactionPrepare  InterceptEvent = "compaction.prepare"
 	EventContextPrepare     InterceptEvent = "context.prepare"
 	EventFrontendEvent      InterceptEvent = "frontend.event"

@@ -48,7 +48,8 @@ if (-not (Test-Path -LiteralPath (Join-Path $target "Reasonix Studio.exe"))) {
 # Every executable the release declares is on disk, and nothing else that is a
 # PE image besides what the installer writes itself.
 $found = @(Get-PeFiles -Root $target | Where-Object { $script:InstallerWrittenX86Pe -cnotcontains $_ })
-$declared = @($script:ReleaseSignedPe + $script:MicrosoftSignedPe)
+Assert-BundledPluginFiles -Root $target
+$declared = @(Get-DeclaredPayloadPe)
 $diff = @(Compare-Object -CaseSensitive ($declared | Sort-Object -CaseSensitive) ($found | Sort-Object -CaseSensitive))
 if ($diff.Count -gt 0) {
     foreach ($d in $diff) { Write-Host "::error title=studio-install.pe-set::$($d.InputObject) $($d.SideIndicator)" }

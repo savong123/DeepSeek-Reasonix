@@ -124,6 +124,10 @@ func (s *Session) SaveCompactionState(sessionPath string, st CompactionState) er
 // rejected so a failed write leaves the previous checkpoint intact. A returned
 // error means the on-disk pointer was not published.
 func SaveCompactionState(sessionPath string, st CompactionState) error {
+	return saveCompactionState(sessionPath, st, 0o644, nil)
+}
+
+func saveCompactionState(sessionPath string, st CompactionState, perm os.FileMode, validate func() error) error {
 	path := ContextStatePath(sessionPath)
 	if path == "" {
 		return fmt.Errorf("empty session path")
@@ -151,7 +155,7 @@ func SaveCompactionState(sessionPath string, st CompactionState) error {
 		return err
 	}
 	b = append(b, '\n')
-	return fileutil.AtomicWriteFileStrict(path, b, 0o644)
+	return fileutil.AtomicWriteFileStrictValidated(path, b, perm, validate)
 }
 
 // CoveredPrefixHash fingerprints the provider-visible prefix of msgs[:n].
@@ -209,7 +213,7 @@ type ContextProjection struct {
 type ContextMaintenanceReceipt struct {
 	OperationID         string    `json:"operation_id,omitempty"`
 	Status              string    `json:"status,omitempty"` // planned|applied|noop|blocked|failed
-	Action              string    `json:"action,omitempty"` // snip|prune|summary|native_tool_clear|noop
+	Action              string    `json:"action,omitempty"` // snip|prune|summary|live_compact|native_tool_clear|noop
 	Trigger             string    `json:"trigger,omitempty"`
 	SourceProjection    uint64    `json:"source_projection,omitempty"`
 	ProjectionVersion   uint64    `json:"projection_version,omitempty"`

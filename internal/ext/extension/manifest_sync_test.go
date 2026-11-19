@@ -34,7 +34,7 @@ func TestManifestV1ValidatorListsStayInSync(t *testing.T) {
 		string(PointContextPrepare), string(PointProviderRequest),
 		string(PointProviderResponse), string(PointToolBefore), string(PointToolAfter),
 		string(PointPermissionDecision), string(PointCompactionPrepare),
-		string(PointCompactionComplete), string(PointFrontendEvent),
+		string(PointCompactionComplete), string(PointCompactionLive), string(PointFrontendEvent),
 	}
 	slots := []string{
 		string(SlotSystemPrompt), string(SlotContext), string(SlotProviderRequest),

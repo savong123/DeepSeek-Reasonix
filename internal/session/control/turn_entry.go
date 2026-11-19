@@ -7,7 +7,6 @@ package control
 import (
 	"context"
 	"fmt"
-	"reasonix/internal/state/sessionstore"
 	"slices"
 	"strings"
 
@@ -239,8 +238,8 @@ func (c *Controller) runReady(ctx context.Context, input string) (err error) {
 		return nil
 	}
 	startMessages := c.messageCount()
-	var marker sessionstore.InFlightTurnMeta
-	defer func() { c.finishInFlightTurn(startMessages, marker) }()
+	var ending foregroundTurnEnd
+	defer func() { ending.finish(c, ctx, startMessages, err) }()
 	if err := c.beginCheckpoint(ctx, input); err != nil {
 		return err
 	}
@@ -254,11 +253,13 @@ func (c *Controller) runReady(ctx context.Context, input string) (err error) {
 		}
 		defer func() { c.hooks.StopResult(context.Background(), lastAssistantText(c.History()), turn, err) }()
 	}
-	ctx, marker = c.beginTurn(ctx, startMessages, true)
+	ctx, ending.marker = c.beginTurn(ctx, startMessages, true)
+	ctx = ending.begin(c, ctx)
 	ctx = c.announceAuthoredTurn(ctx, rawInput, startMessages)
 	ctx = c.withPlannerTurnMetadata(ctx, rawInput, false)
 	ctx = c.prepareTurnRootBudget(ctx)
 	err = c.runWithRunner(ctx, c.withCapabilityRoute(ctx, input, rawInput))
+	ending.completed = true
 	return err
 }
 

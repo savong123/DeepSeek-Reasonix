@@ -71,7 +71,7 @@ func (a *contextWindow) contextMaintenanceSnapshot() ContextMaintenanceSnapshot 
 	if state.LastReceipt != nil {
 		receipt := *state.LastReceipt
 		snapshot.LastReceipt = &receipt
-		if receipt.Status == "applied" && (receipt.Action == "prune" || receipt.Action == "summary") {
+		if receipt.Status == "applied" && (receipt.Action == "prune" || receipt.Action == "summary" || receipt.Action == liveCompactAction) {
 			snapshot.LastSavedTokens = receipt.SavedTokens
 		}
 		// Generation-scoped blocked/failed receipts match contextMaintenanceBlocked.

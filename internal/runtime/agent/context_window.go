@@ -22,6 +22,7 @@ type windowState struct {
 	compactionRunMu sync.Mutex
 	compaction      compactionProgress
 	compactionState sessionstore.CompactionState
+	liveGrowth      liveGrowth
 	cacheState      string // legacy resume telemetry; never provider-visible
 	// checkpointState is rebound by preflight with path, so reset leaves it
 	// to its owner rather than blanking it.
@@ -36,6 +37,7 @@ func (w *windowState) reset() {
 	w.coveredHash.Store(nil)
 	w.compactionMu.Lock()
 	w.compactionState = sessionstore.CompactionState{} // lineage change; disk reloaded on Resume
+	w.liveGrowth = liveGrowth{}
 	w.cacheState = CacheStateUnknown
 	w.compactionMu.Unlock()
 	w.compaction.restart()

@@ -37,7 +37,7 @@ const (
 	ClassSession     OperationClass = "session"
 )
 
-// InterceptEvent names one of the 17 frozen kernel hook points an extension
+// InterceptEvent names a registered kernel hook point an extension
 // may intercept (extension/intercept) or observe (extension/event). The
 // string values mirror internal/ext/extension.InterceptorPoint exactly; they are
 // frozen here so the public wire contract does not depend on kernel
@@ -61,12 +61,11 @@ const (
 	EventPermissionDecision InterceptEvent = "permission.decision"
 	EventCompactionPrepare  InterceptEvent = "compaction.prepare"
 	EventCompactionComplete InterceptEvent = "compaction.complete"
+	EventCompactionLive     InterceptEvent = "compaction.live"
 	EventFrontendEvent      InterceptEvent = "frontend.event"
 )
 
-// InterceptEvents returns the 17 frozen hook point names, sorted. Adding an
-// event is a conscious protocol change: the count is pinned by tests and the
-// list is frozen into the generated schema document.
+// InterceptEvents returns the registered hook point names, sorted for schema generation.
 func InterceptEvents() []string {
 	out := []string{
 		string(EventSessionStart), string(EventSessionEnd), string(EventSessionLoad),
@@ -74,7 +73,7 @@ func InterceptEvents() []string {
 		string(EventAgentBeforeStart), string(EventSystemPromptBuild), string(EventContextPrepare),
 		string(EventProviderRequest), string(EventProviderResponse), string(EventToolBefore),
 		string(EventToolAfter), string(EventPermissionDecision), string(EventCompactionPrepare),
-		string(EventCompactionComplete), string(EventFrontendEvent),
+		string(EventCompactionComplete), string(EventCompactionLive), string(EventFrontendEvent),
 	}
 	slices.Sort(out)
 	return out

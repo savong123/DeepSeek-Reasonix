@@ -124,11 +124,11 @@ func TestSchemaDocumentStructure(t *testing.T) {
 
 	// Frozen enums, events, limits, and errors land in the document.
 	events, ok := document["interceptEvents"].([]any)
-	if !ok || len(events) != 17 {
+	if !ok || len(events) != 18 {
 		t.Fatalf("interceptEvents = %v", document["interceptEvents"])
 	}
 	eventDef := defs["EventParams"].(map[string]any)["properties"].(map[string]any)["event"].(map[string]any)
-	if enum, ok := eventDef["enum"].([]any); !ok || len(enum) != 17 {
+	if enum, ok := eventDef["enum"].([]any); !ok || len(enum) != len(events) {
 		t.Fatalf("EventParams.event enum = %v", eventDef["enum"])
 	}
 	limits, ok := document["limits"].(map[string]any)

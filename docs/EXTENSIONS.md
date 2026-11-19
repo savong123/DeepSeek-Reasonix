@@ -44,7 +44,7 @@ install runtimes you trust completely.
 
 ## What extensions can do
 
-- **Interceptors** — observe and rule on 17 hook points (input, tool calls,
+- **Interceptors** — observe and rule on 18 hook points (input, tool calls,
   permission decisions, provider requests/responses, compaction, session
   lifecycle, frontend events). An interceptor can `continue`, `block` with a
   user-visible reason, or `replace` the payload; the host re-validates every
@@ -156,8 +156,9 @@ instead of relying on an unversioned module.
   simply resolve as unavailable models), and the `extension_surface` /
   `extension_status` event kinds (older frontends drop unknown kinds; ACP
   clients without `reasonix.extensionSurface` get text fallbacks).
-- `plugin-packages.json` keeps its existing schema; an enabled installed
-  runtime *is* the trust record.
+- An enabled installed runtime *is* the trust record. The optional
+  `bundledDefaults` list in `plugin-packages.json` records which bundled
+  defaults have already been offered; it does not enable any runtime.
 
 ## Security model
 

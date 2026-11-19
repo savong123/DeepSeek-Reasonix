@@ -115,7 +115,7 @@ type ShutdownResult struct {
 	Accepted bool `json:"accepted"`
 }
 
-// EventParams is the fire-and-forget observation of one of the 17 hook
+// EventParams is the fire-and-forget observation of one of the registered hook
 // points. Unlike extension/intercept, the extension's answer (if any) is
 // discarded and cannot change host behavior. When Payload exceeds
 // ExternalizeFieldBytes it travels as null and Externalized carries its

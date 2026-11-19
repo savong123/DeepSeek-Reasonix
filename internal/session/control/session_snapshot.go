@@ -387,14 +387,16 @@ func (c *Controller) adoptDiskSession(path string) bool {
 	return true
 }
 
-func (c *Controller) clearInFlightTurn(marker sessionstore.InFlightTurnMeta) {
+func (c *Controller) clearInFlightTurn(marker sessionstore.InFlightTurnMeta) bool {
 	path := c.SessionPath()
 	if path == "" || marker.ID == "" {
-		return
+		return false
 	}
-	if _, err := sessionstore.ClearSessionInFlightTurnIfMatch(path, marker); err != nil {
+	cleared, err := sessionstore.ClearSessionInFlightTurnIfMatch(path, marker)
+	if err != nil {
 		slog.Warn("controller: clear in-flight turn", "err", err)
 	}
+	return err == nil && cleared
 }
 
 func (c *Controller) recoverInterruptedTurn(path string) {

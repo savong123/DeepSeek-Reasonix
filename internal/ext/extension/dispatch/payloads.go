@@ -337,7 +337,7 @@ func validateArguments(arguments string) error {
 // payloadFactory returns a fresh pointer to one point's payload struct.
 type payloadFactory func() any
 
-// payloadRegistry maps each of the 17 intercept points to the factory for
+// payloadRegistry maps each intercept point to the factory for
 // its payload DTO, so replace answers decode strictly into a fresh value of
 // the right type.
 var payloadRegistry = map[extension.InterceptorPoint]payloadFactory{
@@ -352,6 +352,7 @@ var payloadRegistry = map[extension.InterceptorPoint]payloadFactory{
 	extension.PointPermissionDecision: func() any { return &PermissionPayload{} },
 	extension.PointCompactionPrepare:  func() any { return &CompactionPreparePayload{} },
 	extension.PointCompactionComplete: func() any { return &CompactionCompletePayload{} },
+	extension.PointCompactionLive:     func() any { return &LiveCompactionPayload{} },
 	extension.PointSessionStart:       func() any { return &SessionPayload{} },
 	extension.PointSessionEnd:         func() any { return &SessionPayload{} },
 	extension.PointSessionLoad:        func() any { return &SessionPayload{} },

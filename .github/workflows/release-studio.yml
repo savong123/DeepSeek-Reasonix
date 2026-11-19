@@ -143,6 +143,9 @@ jobs:
           set -euo pipefail
           pnpm exec electron-builder --win zip nsis \
             -c.extraMetadata.version="${{ needs.resolve.outputs.semver }}"
+          bundle=../../dist/win-unpacked/resources/bundled-plugins/live-compact
+          test -s "$bundle/reasonix-plugin.json"
+          test -s "$bundle/bin/live-compact.exe"
 
       - name: List the artifacts
         shell: bash

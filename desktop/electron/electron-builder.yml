@@ -54,6 +54,12 @@ extraResources:
     to: frontend-next/dist
 
 win:
+  extraResources:
+    - from: bin/bundled-plugins/live-compact
+      to: bundled-plugins/live-compact
+      filter:
+        - reasonix-plugin.json
+        - bin/live-compact.exe
   target:
     # The portable zip stays alongside the installer: it is what a machine
     # without administrator rights can still run.

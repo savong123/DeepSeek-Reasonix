@@ -10,6 +10,13 @@ import (
 	"reasonix/internal/base/fileutil"
 )
 
+// State is persisted at <Reasonix home>/plugin-packages.json.
+type State struct {
+	Version         int               `json:"version"`
+	Plugins         []InstalledPlugin `json:"plugins"`
+	BundledDefaults []string          `json:"bundledDefaults,omitempty"`
+}
+
 func SaveState(reasonixHome string, st State) error {
 	return saveStateValidated(reasonixHome, st, nil)
 }

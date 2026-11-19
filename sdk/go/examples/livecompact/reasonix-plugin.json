@@ -1,0 +1,21 @@
+{
+  "apiVersion": "reasonix.io/plugin/v2",
+  "name": "live-compact",
+  "version": "0.1.0",
+  "description": "Opt-in turn-end small context cuts for Studio",
+  "provides": [
+    {
+      "namespace": "plugin/live-compact",
+      "kind": "interceptors",
+      "id": "default",
+      "version": "1.0.0"
+    }
+  ],
+  "contributes": {},
+  "runtime": {
+    "command": "${REASONIX_PLUGIN_ROOT}/bin/live-compact.exe",
+    "required": false,
+    "intercepts": ["compaction.live"],
+    "capabilities": ["interceptors"]
+  }
+}

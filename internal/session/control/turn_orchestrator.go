@@ -222,8 +222,8 @@ func (o *turnOrchestrator) runOrchestratedTurn(ctx context.Context, turn orchest
 		return nil
 	}
 	startMessages := c.messageCount()
-	var marker sessionstore.InFlightTurnMeta
-	defer func() { c.finishInFlightTurn(startMessages, marker) }()
+	var ending foregroundTurnEnd
+	defer func() { ending.finish(c, ctx, startMessages, err) }()
 	defer c.recordDisplayForNewUser(startMessages, turn.display)
 	if turn.editedOriginal != "" {
 		defer c.markEditedForNewUser(startMessages, turn.editedOriginal)
@@ -231,9 +231,6 @@ func (o *turnOrchestrator) runOrchestratedTurn(ctx context.Context, turn orchest
 	if err := c.beginOrchestratedCheckpoint(ctx, turn); err != nil {
 		return err
 	}
-	// UserPromptSubmit / Stop hooks bracket the whole turn (incl. the plan
-	// research + approved-execution sub-turns below): a gating UserPromptSubmit
-	// aborts before any model call; Stop fires once when the turn returns.
 	if c.hooks.Enabled() {
 		c.mu.Lock()
 		c.turn++
@@ -244,7 +241,8 @@ func (o *turnOrchestrator) runOrchestratedTurn(ctx context.Context, turn orchest
 		}
 		defer func() { c.hooks.StopResult(context.Background(), lastAssistantText(c.History()), turn, err) }()
 	}
-	ctx, marker = c.openTurnBoundary(ctx, turn, startMessages)
+	ctx, ending.marker = c.openTurnBoundary(ctx, turn, startMessages)
+	ctx = ending.begin(c, ctx)
 	if continuation != nil {
 		ctx = agent.WithDeliveryExecutionScope(ctx, agent.DeliveryExecutionScope{
 			ID:       continuation.scopeID,
@@ -303,7 +301,9 @@ func (o *turnOrchestrator) runOrchestratedTurn(ctx context.Context, turn orchest
 		}
 		return err
 	}
-	return o.gatePlanApproval(ctx)
+	err = o.gatePlanApproval(ctx)
+	ending.completed = true
+	return err
 }
 
 // announceAuthoredTurn opens this turn's boundary before any planner or

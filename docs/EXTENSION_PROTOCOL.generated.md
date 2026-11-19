@@ -5,7 +5,7 @@
 - Protocol ID: `reasonix.extension.v2`
 - Protocol major: `2`
 - Schema: `internal/ext/extension/protocol/schema.generated.json`
-- Schema hash: `sha256:a0716fcfa8aab0f67a5c2299c4e6fa1573378e44c6050633a930d6d736f35fd7`
+- Schema hash: `sha256:26a955a998bd945e8d1d108dada669b4cf2fcd974727f15790a7d9962938dae0`
 
 Within major v2 only optional fields, new enum values, and new methods may
 be added; existing required fields, directions, limits, error reasons, and
@@ -35,13 +35,14 @@ semantics never change.
 | `host/ui/publish` | `extension_to_host_request` | `ui` | `UIPublishParams` | `UIPublishResult` |
 | `host/ui/request` | `extension_to_host_request` | `ui` | `UIRequestParams` | `UIRequestResult` |
 
-## Intercept events (17)
+## Intercept events (18)
 
 `extension/intercept` (blocking) and `extension/event` (observation) share
 these frozen hook points:
 
 - `agent.before_start`
 - `compaction.complete`
+- `compaction.live`
 - `compaction.prepare`
 - `context.prepare`
 - `frontend.event`

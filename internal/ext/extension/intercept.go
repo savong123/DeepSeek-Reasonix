@@ -27,6 +27,7 @@ const (
 	PointPermissionDecision InterceptorPoint = "permission.decision"
 	PointCompactionPrepare  InterceptorPoint = "compaction.prepare"
 	PointCompactionComplete InterceptorPoint = "compaction.complete"
+	PointCompactionLive     InterceptorPoint = "compaction.live"
 	PointFrontendEvent      InterceptorPoint = "frontend.event"
 )
 
@@ -40,7 +41,7 @@ func knownInterceptorPoint(p InterceptorPoint) bool {
 		PointSystemPromptBuild, PointContextPrepare, PointProviderRequest,
 		PointProviderResponse, PointToolBefore, PointToolAfter,
 		PointPermissionDecision, PointCompactionPrepare, PointCompactionComplete,
-		PointFrontendEvent:
+		PointCompactionLive, PointFrontendEvent:
 		return true
 	default:
 		return false

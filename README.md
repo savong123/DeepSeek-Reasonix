@@ -154,6 +154,10 @@ Each Windows package ships with a `.minisig` signature, and the release
 carries `SHA256SUMS` and the `latest.json` this fork's updater reads. Once
 installed, Studio updates itself in place from this repository.
 
+Starting with Studio v2.63.1, the Windows installer and portable zip include
+[Live Compact](./docs/LIVE_COMPACT.md). It is off by default. To try it, enable
+`live-compact` under **Settings → Extensions → Plugin packages**.
+
 The same release also carries the 2.x `reasonix` CLI as archives for
 `darwin|linux|windows × amd64|arm64`.
 

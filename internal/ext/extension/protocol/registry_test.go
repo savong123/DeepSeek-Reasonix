@@ -118,8 +118,8 @@ func TestDecodeHelpersRejectWrongDirection(t *testing.T) {
 
 func TestInterceptEventsFrozen(t *testing.T) {
 	events := InterceptEvents()
-	if len(events) != 17 {
-		t.Fatalf("InterceptEvents has %d entries, want 17", len(events))
+	if len(events) != 18 {
+		t.Fatalf("InterceptEvents has %d entries, want 18", len(events))
 	}
 	seen := map[string]bool{}
 	for i, event := range events {

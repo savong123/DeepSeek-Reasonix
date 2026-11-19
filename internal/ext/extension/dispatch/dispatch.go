@@ -551,6 +551,9 @@ func checkPayloadType(point extension.InterceptorPoint, payloadPtr any) (payload
 // adoptReplacement carries what the host owns across a replacement: the
 // credit for context blocks, and the refusal of one that rewrites another's.
 func adoptReplacement(payloadPtr, fresh any, plugin string) error {
+	if proposal, ok := fresh.(*LiveCompactionPayload); ok {
+		return proposal.adoptProposal(payloadPtr.(*LiveCompactionPayload))
+	}
 	if in, ok := fresh.(*InputPayload); ok {
 		if old, ok := payloadPtr.(*InputPayload); ok {
 			return AdoptInputContext(old, in, plugin)

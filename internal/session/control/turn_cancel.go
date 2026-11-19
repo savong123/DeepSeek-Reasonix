@@ -402,7 +402,7 @@ func (c *Controller) markInFlightTurn(startMessageIndex int, preserveUser bool) 
 // finishInFlightTurn persists the completed transcript before removing the
 // crash marker. A crash can therefore leave either a recoverable marker or a
 // durable completed transcript, never an unmarked in-memory-only suffix.
-func (c *Controller) finishInFlightTurn(startMessages int, marker sessionstore.InFlightTurnMeta) {
+func (c *Controller) finishInFlightTurn(startMessages int, marker sessionstore.InFlightTurnMeta) bool {
 	commitPrepared := marker.ID == ""
 	if marker.ID != "" && c.executor != nil {
 		digest, digestErr := c.executor.Session().ContentDigest()
@@ -420,7 +420,7 @@ func (c *Controller) finishInFlightTurn(startMessages int, marker sessionstore.I
 		// Keep the marker when the transcript did not become durable. Resume can
 		// then retry recovery instead of treating an in-memory-only tail as done.
 		slog.Warn("controller: keeping in-flight marker after failed turn snapshot", "err", err)
-		return
+		return false
 	}
 	if err != nil {
 		slog.Warn("controller: turn transcript saved before metadata update failed", "err", err)
@@ -429,9 +429,10 @@ func (c *Controller) finishInFlightTurn(startMessages int, marker sessionstore.I
 		// Do not clear an unprepared marker: a crash between the snapshot and this
 		// point would otherwise leave recovery without exact commit evidence.
 		slog.Warn("controller: keeping in-flight marker without commit digest", "marker_id", marker.ID)
-		return
+		return false
 	}
-	c.clearInFlightTurn(marker)
+	cleared := c.clearInFlightTurn(marker)
+	return durable && cleared
 }
 
 // transplantInFlightTurnMarker moves a pending in-flight-turn marker from the

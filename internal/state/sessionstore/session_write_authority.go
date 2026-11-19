@@ -115,6 +115,20 @@ func (a *SessionWriteAuthority) Covers(path string) bool {
 	return a.path == canonicalSessionSavePath(path)
 }
 
+func (a *SessionWriteAuthority) lockForPublication(path string) (func(), error) {
+	if a == nil || a.lease == nil {
+		return nil, ErrSessionWriteAuthorityMissing
+	}
+	l := a.lease
+	l.mu.Lock()
+	owner, active := sessionLeaseActiveOwners.Load(a.path)
+	if l.released || l.leaseLock == nil || !active || owner != a.ownerID || l.writeGeneration != a.generation || a.path != canonicalSessionSavePath(path) {
+		l.mu.Unlock()
+		return nil, ErrSessionWriteAuthorityStale
+	}
+	return l.mu.Unlock, nil
+}
+
 // BeginSave marks an in-flight save against the issuing lease so Release waits
 // for the write cycle to finish. The returned release must run exactly once.
 // A missing or stale authority returns a typed error and does not enter the

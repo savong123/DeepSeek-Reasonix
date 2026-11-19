@@ -23,6 +23,10 @@ $script:ReleaseSignedPe = @(
 $script:MicrosoftSignedPe = @(
     "d3dcompiler_47.dll"
 )
+# The fork checks these as packaged PE files, not Authenticode signers.
+$script:BundledUnsignedPe = @(
+    "resources/bundled-plugins/live-compact/bin/live-compact.exe"
+)
 # Microsoft Root Certificate Authority 2010, the root their signer chains to.
 $script:MicrosoftRootThumbprint = "3B1EFD3A66EA28B16697394703A72CA340A05BD5"
 # Written by NSIS packaging after the payload is signed, so pinned by content.
@@ -109,11 +113,24 @@ function Get-ManifestDigest {
     [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($bytes)).ToLowerInvariant()
 }
 
+function Get-DeclaredPayloadPe {
+    $script:ReleaseSignedPe + $script:MicrosoftSignedPe + $script:BundledUnsignedPe
+}
+
+function Assert-BundledPluginFiles {
+    param([Parameter(Mandatory = $true)][string]$Root)
+    $manifest = Join-Path $Root "resources/bundled-plugins/live-compact/reasonix-plugin.json"
+    if (-not (Test-Path -LiteralPath $manifest -PathType Leaf)) {
+        throw "Windows payload lacks the Live Compact manifest: $manifest"
+    }
+}
+
 # The PE files under Root must be exactly the declared ones.
 function Assert-DeclaredPeSet {
     param([Parameter(Mandatory = $true)][string]$Root)
 
-    $declared = @($script:ReleaseSignedPe + $script:MicrosoftSignedPe)
+    Assert-BundledPluginFiles -Root $Root
+    $declared = @(Get-DeclaredPayloadPe)
     $found = @(Get-PeFiles -Root $Root)
     $unexpected = @($found | Where-Object { $declared -cnotcontains $_ })
     $missing = @($declared | Where-Object { $found -cnotcontains $_ })

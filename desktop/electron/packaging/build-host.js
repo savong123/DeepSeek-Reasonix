@@ -1,5 +1,6 @@
 "use strict";
 const fs = require("node:fs");
+const { createHash } = require("node:crypto");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
 
@@ -32,24 +33,43 @@ const CWD = ROOT;
 const VERSION = (process.env.REASONIX_VERSION || "").trim();
 const LDFLAGS = VERSION ? `-s -w -X main.version=${VERSION}` : "-s -w";
 
-function go(args, env) {
-  const run = spawnSync("go", args, { cwd: CWD, stdio: "inherit", env: { ...process.env, ...env } });
+function go(args, env, cwd = CWD) {
+  const run = spawnSync("go", args, { cwd, stdio: "inherit", env: { ...process.env, ...env } });
   if (run.status !== 0) {
     console.error(`go ${args.join(" ")} failed`);
     process.exit(run.status ?? 1);
   }
 }
 
+function buildLiveCompact(env) {
+  const sdk = path.join(ROOT, "sdk", "go");
+  const bundle = path.join(OUT, "bundled-plugins", "live-compact");
+  const manifest = "reasonix-plugin.json";
+  fs.mkdirSync(path.join(bundle, "bin"), { recursive: true });
+  go(["build", "-ldflags", "-s -w", "-o", path.join(bundle, "bin", "live-compact.exe"), "./examples/livecompact"], env, sdk);
+  fs.copyFileSync(path.join(sdk, "examples", "livecompact", manifest), path.join(bundle, manifest));
+  const files = ["bin/live-compact.exe", manifest].map((file) => ({
+    Path: file,
+    Hash: sha256(fs.readFileSync(path.join(bundle, file))),
+  }));
+  // This is the same sorted, slash-relative inventory as copiedPluginDigest.
+  return `sha256:${sha256(JSON.stringify(files))}`;
+}
+
+function sha256(data) {
+  return createHash("sha256").update(data).digest("hex");
+}
+
 const driver = spawnSync(process.execPath, [path.join(__dirname, "install-cua-driver.js")], { stdio: "inherit", windowsHide: true });
 if (driver.status !== 0) process.exit(driver.status ?? 1);
 
 if (process.platform !== "darwin") {
-  // go build names the binary after the package and adds .exe where it belongs.
-  // Without cgo, because with it the Linux kernel inherits the runner's glibc.
-  // REASONIX_GOARCH names the architecture to build for; unset, Go's own is
-  // used, which is the runner's.
+  // Without cgo, the Linux kernel does not inherit the runner's glibc.
+  const windows = process.platform === "win32";
   const goarch = (process.env.REASONIX_GOARCH || "").trim();
-  go(["build", "-ldflags", LDFLAGS, "-o", OUT + path.sep, PKG], goarch ? { CGO_ENABLED: "0", GOARCH: goarch } : { CGO_ENABLED: "0" });
+  const env = { CGO_ENABLED: "0", ...(goarch ? { GOARCH: goarch } : {}), ...(windows ? { GOOS: "windows" } : {}) };
+  const flags = windows ? `${LDFLAGS} -X main.liveCompactBundleDigest=${buildLiveCompact(env)}` : LDFLAGS;
+  go(["build", "-ldflags", flags, "-o", OUT + path.sep, PKG], env);
   console.log("built reasonix-studio-host");
   process.exit(0);
 }
