@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"slices"
 	"sync/atomic"
 	"time"
 
@@ -223,10 +224,9 @@ func (a *contextWindow) liveRolesAllowCard(w *liveCompactWork, start, end int) b
 			return m.Role != provider.RoleUser
 		}
 	}
-	msgs := w.state.Projection.Messages
-	for i := len(msgs) - 1; i >= 0; i-- {
-		if !msgs[i].LocalOnly {
-			return msgs[i].Role != provider.RoleUser
+	for _, msg := range slices.Backward(w.state.Projection.Messages) {
+		if !msg.LocalOnly {
+			return msg.Role != provider.RoleUser
 		}
 	}
 	return true
